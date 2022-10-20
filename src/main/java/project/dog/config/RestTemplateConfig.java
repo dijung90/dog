@@ -1,7 +1,6 @@
-package project.dog;
+package project.dog.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,7 @@ import java.time.Duration;
 
 @Configuration
 @RequiredArgsConstructor
-public class Config {
+public class RestTemplateConfig {
 
     private final RestTemplateBuilder restTemplateBuilder;
 

@@ -10,15 +10,13 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @DependsOn("restTemplate")
-public class Servlet {
+public class ServletUtils {
 
     private static RestTemplate restTemplate;
 

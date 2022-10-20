@@ -12,7 +12,7 @@ import java.util.Map;
 
 @SpringBootTest
 @Slf4j
-class ServletTest {
+class ServletUtilsTest {
 
     @Test
     void get(){
@@ -22,7 +22,7 @@ class ServletTest {
         MultiValueMap<String, String> headerMap = new LinkedMultiValueMap<>();
         headerMap.add("headerKey1", "headerValue1");
 
-        Servlet.get("https://www.naver.com", paramMap, headerMap);
+        ServletUtils.get("https://www.naver.com", paramMap, headerMap);
     }
 
 }
