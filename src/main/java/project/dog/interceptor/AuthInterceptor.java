@@ -19,7 +19,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
-
         boolean isSnsLogin = SessionUtils.isSnsLogin(request);
 
         log.info("isSnsLogin ={}", isSnsLogin);
@@ -33,7 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             if(!cookieValueList.isEmpty()){
                 String accessToken = cookieValueList.get(0);
-                log.info("access_token ={}", accessToken);
+                log.info("interceptor access_token ={}", accessToken);
 
             }else{
                 log.info("access_token null");

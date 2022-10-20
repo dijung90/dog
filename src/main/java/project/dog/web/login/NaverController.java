@@ -21,7 +21,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/login/naver")
 public class NaverController {
 
     @Value("${CLIENT_ID}")
@@ -44,20 +43,27 @@ public class NaverController {
 
     private String state;
 
-    @GetMapping("/authorize")
+    @GetMapping("/login/naver/authorize")
     public void authorize(HttpServletResponse response) throws IOException {
         log.info("authorize in");
 
         SecureRandom random = new SecureRandom();
         state = new BigInteger(130, random).toString();
 
-        String url = authorizeUrl+"?response_type=code&client_id="+clientID +"&redirect_uri=" + redirectUrl + "&state="+ state;
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("response_type", Common.CODE);
+        paramMap.put(Common.CLIENT_ID, clientID);
+        paramMap.put(Common.REDIRECT_URI, redirectUrl);
+        paramMap.put(Common.STATE, state);
+
+        String url = ServletUtils.get(authorizeUrl, paramMap);
+
         log.info("state={}", state);
 
         response.sendRedirect(url);
     }
 
-    @GetMapping("/callback")
+    @GetMapping("/login/naver/callback")
     public void callback(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -69,7 +75,7 @@ public class NaverController {
         log.info("error={}", error);
 
         if(error.equals("access_denied")){
-            //return "error";
+            //로그인 화면으로~
         }
 
         Map<String, String> paramMap = new HashMap<>();
@@ -102,8 +108,7 @@ public class NaverController {
             log.info("userId = {}", userId);
 
             Cookie cookie = new Cookie("access_token", accessToken);
-            //cookie.setMaxAge(expiresIn);
-            cookie.setMaxAge(10);
+            cookie.setMaxAge(expiresIn);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
@@ -124,7 +129,7 @@ public class NaverController {
         //return "false";
     }
 
-    @GetMapping("/refresh")
+    @GetMapping("/login/naver/refresh")
     public String refresh(@SessionAttribute(required = false) String refresh_token,
                           HttpServletRequest request,
                           HttpServletResponse response) throws IOException {
@@ -162,6 +167,49 @@ public class NaverController {
         }
 
         return "index";
+
+    }
+
+    @GetMapping("/naver/logout")
+    public void logout(@CookieValue String access_token,
+                       HttpServletResponse response,
+                       HttpServletRequest request) throws IOException {
+        log.info("logout in");
+        log.info("access_token = {}", access_token);
+
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put(Common.GRANT_TYPE, "delete");
+        paramMap.put(Common.CLIENT_ID, clientID);
+        paramMap.put(Common.CLIENT_SECRET, clientSecret);
+        paramMap.put(Common.ACCESS_TOKEN, access_token);
+        paramMap.put("service_provider", "NAVER");
+
+        ResponseEntity<Map> delete = ServletUtils.post(tokenUrl, paramMap, MediaType.APPLICATION_FORM_URLENCODED, Map.class);
+
+        if(delete.getStatusCodeValue() == 200){
+            log.info("delete status 200 OK");
+            Map<String, String> resultBody = delete.getBody();
+            String accessToken = resultBody.get("access_token");
+            String result = resultBody.get("result");
+            log.info("delete accessToken = {}", accessToken);
+            log.info("delete result = {}", result);
+
+            if (result.equals("success")) {
+                log.info("delete success");
+
+                Cookie cookie = new Cookie("access_token", null);
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                HttpSession session = request.getSession(false);
+                session.invalidate();
+
+                response.sendRedirect("/");
+            }else {
+                //토큰 만료와 같은 문제로 로그아웃 에러
+                //그냥 메인화면으로 이동
+                response.sendRedirect("/");
+            }
+        }
 
     }
 

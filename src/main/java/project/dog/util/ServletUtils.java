@@ -25,23 +25,10 @@ public class ServletUtils {
         this.restTemplate = restTemplate;
     }
 
-    public static String get(String url){
-        return get(url, null, null);
-    }
-
-    public static String get(String url, MultiValueMap<String, String> headerMap){
-        return get(url, null, headerMap);
-    }
-
     public static String get(String url, Map<String, String> paramMap){
-        return get(url, paramMap, null);
-    }
-
-    public static String get(String url, Map<String, String> paramMap, MultiValueMap<String, String> headerMap){
         HttpHeaders headers = new HttpHeaders();
-        headers.addAll(headerMap);
         String params =  setUrlParams(paramMap);
-        RequestEntity<?> request = new RequestEntity(headers, HttpMethod.GET, URI.create(url+"?"+params));
+        RequestEntity<?> request = new RequestEntity(headers, HttpMethod.GET, URI.create(url + "?" + params));
         log.info("request url ={}", request.getUrl());
         log.info("request header={}", request.getHeaders());
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
@@ -49,7 +36,7 @@ public class ServletUtils {
         log.info("response header ={}", response.getHeaders());
         log.info("response status = {}", response.getStatusCode());
 
-        return response.getBody();
+        return request.getUrl().toString();
     }
 
     public static <T> ResponseEntity<T> post(String url, Map<String, String> paramMap, MediaType mediaType, Class<T> responseType){
