@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.dog.repository.mapper.MemberMapper">
+    <insert id="save">
+        insert into member (id, password, nickname, dog_name, dog_age, reg_date, last_date)
+        values (#{id}, #{password}, #{nickname}, #{dogName}, #{dogAge}, now(), now())
+    </insert>
+    <select id="findById" resultType="project.dog.domain.Member">
+        select * from member where id=#{id}
+    </select>
+    <select id="findAll" resultType="project.dog.domain.Member">
+        select * from member
+    </select>
+    <update id="updateMember">
+        update member
+        set password=#{dto.password},
+            nickname=#{dto.nickname},
+            dog_name=#{dto.dogName},
+            dog_age=#{dto.dogAge}
+        where id=#{id}
+    </update>
+    <delete id="deleteMember">
+        delete from member where id=#{id}
+    </delete>
+</mapper>

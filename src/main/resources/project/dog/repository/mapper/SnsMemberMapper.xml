@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.dog.repository.mapper.SnsMemberMapper">
+    <insert id="save">
+        insert into sns_member (sns_id, nickname, dog_name, dog_age, reg_date, last_date, refresh_token)
+        values (#{snsId}, #{nickname}, #{dogName}, #{dogAge}, now(), now(), #{refreshToken})
+    </insert>
+    <select id="findById" resultType="project.dog.domain.SnsMember">
+        select * from sns_member
+        where sns_id=#{snsId}
+    </select>
+    <select id="findAll" resultType="project.dog.domain.SnsMember">
+        select * from sns_member
+    </select>
+    <update id="updateMember">
+        update sns_member
+        set nickname=#{dto.nickname},
+            dog_name=#{dto.dogName},
+            dog_age=#{dto.dogAge}
+        where sns_id=#{snsId}
+    </update>
+    <update id="updateRefreshToken">
+        update sns_member
+        set refresh_token=#{refreshToken}
+        where sns_id=#{snsId}
+    </update>
+    <delete id="deleteMember">
+    delete from sns_member where sns_id=#{snsId}
+    </delete>
+</mapper>
