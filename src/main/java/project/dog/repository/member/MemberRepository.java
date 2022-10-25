@@ -38,4 +38,13 @@ public class MemberRepository {
         mapper.deleteMember(id);
     }
 
+    public boolean isMember(String id){
+
+        String findId = mapper.isMember(id);
+        if(findId == null){
+            return false;
+        }
+        return true;
+    }
+
 }

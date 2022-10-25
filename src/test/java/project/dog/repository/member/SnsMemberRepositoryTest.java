@@ -125,4 +125,22 @@ class SnsMemberRepositoryTest {
         boolean result = snsMemberRepository.findById(memberDTO.getSnsId()).isEmpty();
         Assertions.assertThat(result).isTrue();
     }
+
+    @Test
+    void isMember(){
+        boolean isFalse = snsMemberRepository.isMember("false");
+        Assertions.assertThat(isFalse).isFalse();
+
+        SnsMemberRegisterDTO memberDTO = new SnsMemberRegisterDTO();
+        memberDTO.setSnsId("true");
+        memberDTO.setNickname("registerNickname");
+        memberDTO.setDogName("registerDogName");
+        memberDTO.setDogAge(3);
+        memberDTO.setRefreshToken("registerRefreshToken");
+        snsMemberRepository.save(memberDTO);
+
+        boolean isTrue = snsMemberRepository.isMember("true");
+
+        Assertions.assertThat(isTrue).isTrue();
+    }
 }

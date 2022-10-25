@@ -21,4 +21,6 @@ public interface MemberMapper {
 
     void deleteMember(String id);
 
+    String isMember(String id);
+
 }

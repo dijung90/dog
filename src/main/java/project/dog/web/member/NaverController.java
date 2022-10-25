@@ -1,12 +1,16 @@
-package project.dog.web.login;
+package project.dog.web.member;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import project.dog.constant.Common;
+import project.dog.domain.SnsMember;
+import project.dog.service.member.SnsMemberService;
 import project.dog.util.ServletUtils;
 
 import javax.servlet.http.Cookie;
@@ -21,6 +25,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class NaverController {
 
     @Value("${CLIENT_ID}")
@@ -43,6 +48,8 @@ public class NaverController {
 
     private String state;
 
+    private final SnsMemberService service;
+
     @GetMapping("/login/naver/authorize")
     public void authorize(HttpServletResponse response) throws IOException {
         log.info("authorize in");
@@ -64,18 +71,18 @@ public class NaverController {
     }
 
     @GetMapping("/login/naver/callback")
-    public void callback(
+    public RedirectView callback(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(defaultValue = "null") String code,
-            @RequestParam(defaultValue = "null") String error) throws IOException {
+            @RequestParam(defaultValue = "null") String error) {
 
         log.info("callback in");
         log.info("code={}", code);
         log.info("error={}", error);
 
         if(error.equals("access_denied")){
-            //로그인 화면으로~
+            return new RedirectView("/");
         }
 
         Map<String, String> paramMap = new HashMap<>();
@@ -104,8 +111,8 @@ public class NaverController {
             ResponseEntity<Map> getUserInfo = ServletUtils.post(userInfoUrl, headers, Map.class);
             log.info("userInfo = {}", getUserInfo.getBody());
             Map<String, String> userInfo = (Map<String, String>)getUserInfo.getBody().get("response");
-            String userId = userInfo.get("id");
-            log.info("userId = {}", userId);
+            String snsId = userInfo.get("id");
+            log.info("snsId = {}", snsId);
 
             Cookie cookie = new Cookie("access_token", accessToken);
             cookie.setMaxAge(expiresIn);
@@ -113,26 +120,31 @@ public class NaverController {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
-            // 이미 회원가입한 사용자일경우 메인 페이지로 이동
-
-
-            // 첫 로그인(회원x) 사용자일경우 회원가입 페이지로 이동
+            boolean isMember = service.isMember(snsId);
             HttpSession session = request.getSession();
-            session.setAttribute("snsId", "test!");
-            //DB연결 전 임시 세션 저장 (삭제할거야~~)
-            session.setAttribute("refresh_token", refreshToken);
+            // 이미 회원가입한 사용자일경우 메인 페이지로 이동
+            if(isMember){
+                SnsMember findMember = service.findById(snsId);
+                session.setAttribute("snsId", findMember.getSnsId());
+                session.setAttribute("nickname", findMember.getNickname());
+                return new RedirectView("/");
+            }
+            // 첫 로그인(회원x) 사용자일경우 회원가입 페이지로 이동
+            session.setAttribute("snsId", snsId);
+            session.setAttribute("refreshToken", refreshToken);
+            return new RedirectView("/snsRegister");
 
-            response.sendRedirect("/");
-            //return "ok";
         }
-
-        //return "false";
+        return new RedirectView("/");
     }
 
     @GetMapping("/login/naver/refresh")
-    public String refresh(@SessionAttribute(required = false) String refresh_token,
-                          HttpServletRequest request,
-                          HttpServletResponse response) throws IOException {
+    public void refresh(@SessionAttribute String snsId,
+                        HttpServletResponse response,
+                        HttpServletRequest request) throws IOException {
+
+        SnsMember findMember = service.findById(snsId);
+        String refresh_token = findMember.getRefreshToken();
         log.info("refresh in");
         log.info("refresh_token = {}", refresh_token);
 
@@ -156,17 +168,16 @@ public class NaverController {
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             cookie.setMaxAge(expiresIn);
-
             response.addCookie(cookie);
-            response.sendRedirect("/");
+
+            String referer = request.getHeader("referer");
+            response.sendRedirect(referer);
 
         }else{
             //refresh token 만료. 아예 로그인 다시 해야함
             //로그인 화면으로 이동
-            return "login page";
+            response.sendRedirect("/login/naver/authorize");
         }
-
-        return "index";
 
     }
 

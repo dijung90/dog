@@ -2,7 +2,6 @@ package project.dog.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -12,6 +11,7 @@ public class PageController {
 
     @GetMapping("/")
     public String welcome() {
+        log.info("Welcome Page");
 
         return "index";
     }

@@ -24,4 +24,6 @@ public interface SnsMemberMapper {
     void updateRefreshToken(SnsRefreshTokenUpdateDTO refreshTokenUpdateDTO);
 
     void deleteMember(String snsId);
+
+    String isMember(String snsId);
 }

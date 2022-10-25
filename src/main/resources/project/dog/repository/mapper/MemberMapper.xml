@@ -11,6 +11,10 @@
     <select id="findAll" resultType="project.dog.domain.Member">
         select * from member
     </select>
+    <select id="isMember" resultType="java.lang.String">
+        select id from member
+        where id=#{id}
+    </select>
     <update id="updateMember">
         update member
         set password=#{dto.password},

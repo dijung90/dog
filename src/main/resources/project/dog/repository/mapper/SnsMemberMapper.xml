@@ -12,6 +12,9 @@
     <select id="findAll" resultType="project.dog.domain.SnsMember">
         select * from sns_member
     </select>
+    <select id="isMember" resultType="java.lang.String">
+        select sns_id from sns_member where sns_id=#{snsId}
+    </select>
     <update id="updateMember">
         update sns_member
         set nickname=#{dto.nickname},

@@ -43,4 +43,13 @@ public class SnsMemberRepository {
     public void deleteMember(String snsId){
         mapper.deleteMember(snsId);
     }
+
+    public boolean isMember(String snsId){
+        String findId = mapper.isMember(snsId);
+
+        if(findId == null){
+            return false;
+        }
+        return true;
+    }
 }

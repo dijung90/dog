@@ -112,4 +112,24 @@ class MemberRepositoryTest {
 
     }
 
+    @Test
+    void isMember(){
+        //없는 회원
+        boolean isFalse = memberRepository.isMember("false");
+
+        Assertions.assertThat(isFalse).isFalse();
+
+        //있는 회원
+        MemberRegisterDTO memberDTO = new MemberRegisterDTO();
+        memberDTO.setId("testId");
+        memberDTO.setPassword("testPassword");
+        memberDTO.setNickname("testNickName");
+        memberDTO.setDogName("testDogName");
+        memberDTO.setDogAge(15);
+        memberRepository.save(memberDTO);
+
+        boolean isTrue = memberRepository.isMember("testId");
+
+        Assertions.assertThat(isTrue).isTrue();
+    }
 }
