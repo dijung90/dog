@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.dog.domain.SnsMember;
+import project.dog.domain.member.SnsMember;
 import project.dog.repository.dto.member.SnsMemberRegisterDTO;
 import project.dog.repository.member.SnsMemberRepository;
 

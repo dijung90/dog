@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import project.dog.domain.Member;
+import project.dog.domain.member.Member;
 import project.dog.repository.dto.member.MemberLoginDTO;
 import project.dog.repository.dto.member.MemberRegisterDTO;
 import project.dog.service.member.MemberService;

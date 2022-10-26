@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.dog.domain.Member;
+import project.dog.domain.member.Member;
 import project.dog.repository.dto.member.MemberLoginDTO;
 import project.dog.repository.dto.member.MemberRegisterDTO;
 import project.dog.repository.member.MemberRepository;

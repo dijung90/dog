@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.dog.repository.mapper.board.BoardTalkMapper">
+    <insert id="save" >
+        insert into board_talk (title, writer, content, file_no, reg_date)
+        values(#{title}, #{writer}, #{content}, #{fileNo}, now())
+    </insert>
+    <select id="findByNo" resultType="project.dog.domain.board.BoardTalk">
+        select * from board_talk where no=#{no}
+    </select>
+    <select id="findAll" resultType="project.dog.domain.board.BoardTalk">
+        select * from board_talk
+    </select>
+    <update id="update">
+        update board_talk
+        set title=#{param.title},
+            content=#{param.content},
+            file_no=#{param.fileNo},
+            update_date=now()
+        where no=#{no}
+    </update>
+    <delete id="delete">
+        delete from board_talk where no=#{no}
+    </delete>
+    <select id="findByKeyword" resultType="project.dog.domain.board.BoardTalk">
+        select * from board_talk
+        <where>
+            <if test="group.equals('writer')">
+                writer like concat('%',#{keyword},'%')
+            </if>
+            <if test="group.equals('title')">
+                title like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

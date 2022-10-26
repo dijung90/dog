@@ -3,10 +3,10 @@ package project.dog.repository.member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import project.dog.domain.Member;
+import project.dog.domain.member.Member;
 import project.dog.repository.dto.member.MemberRegisterDTO;
 import project.dog.repository.dto.member.MemberUpdateDTO;
-import project.dog.repository.mapper.MemberMapper;
+import project.dog.repository.mapper.member.MemberMapper;
 
 import java.util.List;
 import java.util.Optional;

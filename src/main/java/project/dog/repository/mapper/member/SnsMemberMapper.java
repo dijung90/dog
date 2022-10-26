@@ -1,8 +1,8 @@
-package project.dog.repository.mapper;
+package project.dog.repository.mapper.member;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import project.dog.domain.SnsMember;
+import project.dog.domain.member.SnsMember;
 import project.dog.repository.dto.member.SnsMemberRegisterDTO;
 import project.dog.repository.dto.member.SnsMemberUpdateDTO;
 import project.dog.repository.dto.member.SnsRefreshTokenUpdateDTO;

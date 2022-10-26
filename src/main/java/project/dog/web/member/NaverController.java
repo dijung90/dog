@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import project.dog.constant.Common;
-import project.dog.domain.SnsMember;
+import project.dog.domain.member.SnsMember;
 import project.dog.service.member.SnsMemberService;
 import project.dog.util.ServletUtils;
 

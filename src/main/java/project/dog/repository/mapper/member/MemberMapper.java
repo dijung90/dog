@@ -1,8 +1,8 @@
-package project.dog.repository.mapper;
+package project.dog.repository.mapper.member;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import project.dog.domain.Member;
+import project.dog.domain.member.Member;
 import project.dog.repository.dto.member.MemberRegisterDTO;
 import project.dog.repository.dto.member.MemberUpdateDTO;
 

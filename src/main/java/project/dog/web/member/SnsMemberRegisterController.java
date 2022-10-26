@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import project.dog.domain.SnsMember;
+import project.dog.domain.member.SnsMember;
 import project.dog.repository.dto.member.SnsMemberRegisterDTO;
 import project.dog.service.member.SnsMemberService;
 

@@ -1,4 +1,4 @@
-package project.dog.domain;
+package project.dog.domain.member;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import project.dog.domain.Member;
+import project.dog.domain.member.Member;
 import project.dog.repository.dto.member.MemberRegisterDTO;
 import project.dog.repository.dto.member.MemberUpdateDTO;
 
